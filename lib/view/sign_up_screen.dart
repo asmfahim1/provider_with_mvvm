@@ -6,14 +6,15 @@ import 'package:provider_with_mvvm/utils/routes/route_name.dart';
 import 'package:provider_with_mvvm/utils/validator.dart';
 import 'package:provider_with_mvvm/view_model/auth_view_model.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final ValueNotifier<bool> _obscurePassword = ValueNotifier<bool>(true);
@@ -27,13 +28,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     print('=======widget build : ');
-    //Size size = MediaQuery.of(context).size;
     final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         centerTitle: true,
-        title: const Text('Login'),
+        title: const Text('Sign up'),
       ),
       body: SafeArea(
         child: Padding(
@@ -98,28 +97,28 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 20,
                 ),
                 RoundButton(
-                  title: 'Login',
+                  title: 'Sign up',
                   onPress: () {
                     if (_formKey.currentState!.validate()) {
                       Map data = {
                         "email": emailController.text,
                         "password": passwordController.text
                       };
-                      authViewModel.loginMethod(data, context);
+                      authViewModel.signUpMethod(data, context);
                       print('Api call');
                     }
                   },
-                  loading: authViewModel.isLoading,
+                  loading: authViewModel.signUpLoading,
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, RouteName.signUp);
+                    Navigator.pushNamed(context, RouteName.login);
                   },
                   child: const Text(
-                    "don't have an account? Sign Up",
+                    "already have an account? Login",
                     style: TextStyle(fontSize: 15, color: Colors.green),
                   ),
                 ),
