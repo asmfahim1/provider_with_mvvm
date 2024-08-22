@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_with_mvvm/data/response/status.dart';
+import 'package:provider_with_mvvm/utils/general_utils.dart';
 import 'package:provider_with_mvvm/view_model/home_view_model.dart';
 import 'package:provider_with_mvvm/view_model/user_view_model.dart';
 
@@ -46,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, value, _) {
             switch(value.movieList.status){
               case Status.LOADING :
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               case Status.ERROR :
                 return Center(child: Text('${value.movieList.message}'));
               case Status.COMPLETED:
@@ -54,10 +55,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: value.movieList.data!.movies!.length,
                     itemBuilder: (context, index){
                   return Card(
-                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    color: Colors.white,
+                    elevation: 2,
+                    margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                     child: ListTile(
+                      leading: Image.network(
+                        height: 70,
+                          width: 50,
+                          fit: BoxFit.cover,
+                          value.movieList.data!.movies![index].posterurl.toString(),
+                        errorBuilder: (context, error, stack) {
+                            return const Icon(Icons.error_outline_outlined, color: Colors.red, size: 24,);
+                        },
+                      ),
                       title: Text(value.movieList.data!.movies![index].title.toString()),
                       subtitle: Text(value.movieList.data!.movies![index].title.toString()),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text('${Utils.averageRating(value.movieList.data!.movies![index].ratings!) }'),
+                          const Icon(Icons.stars_rounded, color: Colors.purple, size: 24,)
+                        ],
+                      ),
                     ),
                   );
                 });
