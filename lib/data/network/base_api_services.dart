@@ -1,3 +1,4 @@
+import 'dart:io';
 
 abstract class BaseApiServices{
 
@@ -8,4 +9,6 @@ abstract class BaseApiServices{
   Future<dynamic> putApiResponse(String url);
 
   Future<dynamic> deleteApiResponse(String url);
+
+  Future<dynamic> uploadImage(String url, File imageFile);
 }
